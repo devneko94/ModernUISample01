@@ -7,8 +7,40 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Theme\" />
-    <Folder Include="Images\" />
+    <None Remove="Images\CloseIcon.png" />
+    <None Remove="Images\MaximizeIcon.png" />
+    <None Remove="Images\MinimizeIcon.png" />
+    <None Remove="Images\NormalizeIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\MaximizeIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\CloseIcon.png" />
+    <Resource Include="Images\MinimizeIcon.png" />
+    <Resource Include="Images\NormalizeIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

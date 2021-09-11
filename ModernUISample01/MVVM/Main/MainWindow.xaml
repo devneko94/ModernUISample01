@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModernUISample01.MVVM.Main"
+        xmlns:ctl="clr-namespace:ModernUISample01.Controls"
         mc:Ignorable="d"
-        Height="650" Width="1200"
+        x:Name="Root"
+        Height="430" Width="600" MinHeight="430" MinWidth="600"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -15,13 +17,124 @@
         <local:MainVM/>
     </Window.DataContext>
     <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="/Fonts/#Noto Sans"/>
+        </Style>
         <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="/Fonts/#Lato"/>
+            <Setter Property="FontFamily" Value="/Fonts/#Noto Sans"/>
+        </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="FontFamily" Value="/Fonts/#Noto Sans"/>
         </Style>
     </Window.Resources>
-    <Border Background="#FF251E5F" CornerRadius="10">
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                   FontSize="64" Foreground="White"
-                   Text="{Binding Message}"/>
+
+    <Border CornerRadius="10" BorderThickness="0">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF332A7C" Offset="0"/>
+                <GradientStop Color="#FF5A50AC" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" CornerRadius="10,10,0,0" Background="#FF241C64" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid>
+                    <Label Margin="5,0,0,0" VerticalAlignment="Center"
+                           Foreground="White" FontSize="16" FontFamily="/Fonts/#Noto Sans"
+                           Content="{Binding AppTitle}"/>
+                    <StackPanel Margin="0,0,5,0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource TitleBarButtonStyle}" Click="MinimizeButton_Click">
+                            <Image Source="/Images/MinimizeIcon.png" Margin="6"/>
+                        </Button>
+                        <Button Style="{StaticResource TitleBarButtonStyle_MaximizeButton}" Click="MaximizeButton_Click"/>
+                        <Button Style="{StaticResource TitleBarButtonStyle}" Margin="0" Click="CloseButton_Click">
+                            <Image Source="/Images/CloseIcon.png" Margin="6"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Row="1" Margin="15,10">
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ctl:LabeledTextBox Grid.Column="0" LabelColor="White" LabelText="対象フォルダパス"
+                                            TextMargin="24,0,0,0" TextPadding="5" Height="30" FontSize="14"
+                                            MainText="{Binding TargetFolderPath}"/>
+                    <Button Grid.Column="1" Style="{StaticResource ModernButtonStyle}"
+                                Height="30" Width="30" HorizontalAlignment="Right"
+                                FontSize="16" Content="..." 
+                                Command="{Binding ReferenceCommand}" CommandParameter="1"/>
+                </Grid>
+
+                <Grid Margin="0,30,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ctl:LabeledTextBox Grid.Column="0" LabelColor="White" LabelText="出力先フォルダパス"
+                                            TextMargin="10,0,0,0" TextPadding="5" Height="30" FontSize="14"
+                                            MainText="{Binding OutputFolderPath}"/>
+                    <Button Grid.Column="1" Style="{StaticResource ModernButtonStyle}"
+                                Height="30" Width="30" HorizontalAlignment="Right"
+                                FontSize="16" Content="..."
+                                Command="{Binding ReferenceCommand}" CommandParameter="2"/>
+                </Grid>
+
+                <Grid Margin="0,30,40,0">
+                    <ctl:LabeledTextBox Grid.Column="0" LabelColor="White" LabelText="ファイル検索パターン"
+                                            TextMargin="7,0,0,0" TextPadding="5" Height="30" FontSize="14"
+                                            MainText="{Binding FileSearchPattern}"/>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Margin" Value="30,0,0,0"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="フォルダ検索パターン" Foreground="White" FontSize="14"/>
+                    <RadioButton Content="フォルダ直下のみ検索" IsChecked="{Binding SearchTopDirectoryOnlyOption}"/>
+                    <RadioButton Content="サブフォルダを含めて検索" IsChecked="{Binding SearchAllDirectoriesOption}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Margin" Value="30,0,0,0"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="出力形式" Foreground="White" FontSize="14"/>
+                    <RadioButton Content="CSV ( .csv )" IsChecked="{Binding OutputCSVOption}" Margin="85,0,0,0"/>
+                    <RadioButton Content="Excel ( .xlsx )" IsChecked="{Binding OutputExcelOption}"/>
+                </StackPanel>
+
+                <Grid Margin="0,50,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Button Style="{StaticResource ModernButtonStyle}"
+                                Height="40" Width="150" FontSize="18" FontFamily="/Fonts/#Noto Sans"
+                                Content="実行" Command="{Binding RunCommand}"/>
+                </Grid>
+            </StackPanel>
+
+            <Border Grid.Row="2" CornerRadius="0,0,10,10" Padding="10,0" Background="#FF584EA6">
+                <TextBlock VerticalAlignment="Center" Foreground="White" FontSize="12"
+                           Text="{Binding StatusBarText}" d:Text="ステータスバー"/>
+            </Border>
+        </Grid>
     </Border>
 </Window>
