@@ -1,0 +1,27 @@
+﻿<Window x:Class="ModernUISample01.MVVM.Main.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModernUISample01.MVVM.Main"
+        mc:Ignorable="d"
+        Height="650" Width="1200"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+    <Window.DataContext>
+        <local:MainVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="/Fonts/#Lato"/>
+        </Style>
+    </Window.Resources>
+    <Border Background="#FF251E5F" CornerRadius="10">
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="64" Foreground="White"
+                   Text="{Binding Message}"/>
+    </Border>
+</Window>
